@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useLocale } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { routing, type Locale } from "@/i18n/routing";
+import { persistLocaleChoice } from "@/lib/persist-locale-choice";
 import { cn } from "@/lib/utils";
 
 const labels: Record<Locale, string> = {
@@ -25,7 +26,7 @@ export function LanguageSwitcher() {
 
   return (
     <div
-      className="flex rounded-full border border-border bg-card p-0.5"
+      className="flex items-center rounded-full border border-border bg-card p-0.5"
       role="group"
       aria-label="Language"
     >
@@ -39,8 +40,9 @@ export function LanguageSwitcher() {
             locale={code}
             scroll={false}
             prefetch={false}
+            onClick={() => persistLocaleChoice(code)}
             className={cn(
-              "min-h-8 rounded-full px-2.5 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              "inline-flex h-8 min-w-8 items-center justify-center rounded-full px-2.5 text-xs font-semibold leading-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
               isActive
                 ? "bg-primary text-primary-foreground pointer-events-none"
                 : "text-muted-foreground hover:text-foreground",

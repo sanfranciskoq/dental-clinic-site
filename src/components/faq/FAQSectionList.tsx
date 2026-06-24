@@ -15,11 +15,13 @@ import {
 interface FAQSectionListProps {
   items: FAQItem[];
   showCategoryPrompt: boolean;
+  listId?: string;
 }
 
 export function FAQSectionList({
   items,
   showCategoryPrompt,
+  listId,
 }: FAQSectionListProps) {
   const t = useTranslations("faq");
   const locale = useLocale() as Locale;
@@ -48,7 +50,7 @@ export function FAQSectionList({
   }
 
   return (
-    <Accordion>
+    <Accordion id={listId} className={listId ? "scroll-mt-24" : undefined}>
       {items.map((item) => (
         <AccordionItem
           key={item.id}

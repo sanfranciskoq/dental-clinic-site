@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { Phone, Calendar, AlertCircle } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { getSiteConfig } from "@/lib/i18n/content";
+import { EmergencyFaqLink } from "@/components/layout/EmergencyFaqLink";
 import { Container } from "./Container";
 import type { Locale } from "@/i18n/routing";
 
@@ -37,12 +38,9 @@ export async function Footer({ locale }: FooterProps) {
               {tc("call", { phone: site.phone })}
             </a>{" "}
             {tf("emergencyText")}{" "}
-            <Link
-              href="/faq#emergency"
-              className="font-semibold underline underline-offset-2 hover:text-rose-900"
-            >
+            <EmergencyFaqLink className="font-semibold underline underline-offset-2 hover:text-rose-900">
               {tf("emergencyFaq")}
-            </Link>
+            </EmergencyFaqLink>
           </span>
         </Container>
       </div>

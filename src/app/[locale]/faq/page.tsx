@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { setRequestLocale } from "next-intl/server";
 import { FAQPageContent } from "@/components/faq/FAQPageContent";
 import { FAQJsonLd } from "@/components/faq/FAQJsonLd";
@@ -30,7 +31,9 @@ export default async function FAQPage({ params }: FAQPageProps) {
   return (
     <main id="main-content">
       <FAQJsonLd url={`${site.url}/faq`} items={items} />
-      <FAQPageContent items={items} />
+      <Suspense fallback={null}>
+        <FAQPageContent items={items} />
+      </Suspense>
     </main>
   );
 }

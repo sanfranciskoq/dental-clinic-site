@@ -8,6 +8,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer, MobileCTA } from "@/components/layout/Footer";
 import { LocalBusinessJsonLd } from "@/components/seo/LocalBusinessJsonLd";
 import { LocaleHtmlAttributes } from "@/components/layout/LocaleHtmlAttributes";
+import { LocaleCookieSync } from "@/components/layout/LocaleCookieSync";
 import { routing } from "@/i18n/routing";
 
 interface LocaleLayoutProps {
@@ -34,6 +35,7 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
+      <LocaleCookieSync />
       <LocaleHtmlAttributes locale={locale as Locale} />
       <LocalBusinessJsonLd locale={locale as Locale} />
       <SkipLink locale={locale as Locale} />
