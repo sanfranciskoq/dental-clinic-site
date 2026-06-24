@@ -9,6 +9,7 @@ import {
 import { createDynamicPageMetadata } from "@/lib/metadata";
 import { Container } from "@/components/layout/Container";
 import { CTALink } from "@/components/shared/CTALink";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { routing, type Locale } from "@/i18n/routing";
 
 interface TeamMemberPageProps {
@@ -62,10 +63,7 @@ export default async function TeamMemberPage({ params }: TeamMemberPageProps) {
 
   return (
     <main id="main-content" className="py-12 md:py-16">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
-      />
+      <JsonLd data={personSchema} />
       <Container className="max-w-4xl">
         <div className="flex flex-col gap-8 sm:flex-row sm:items-start">
           <div className="relative mx-auto aspect-square w-full max-w-xs shrink-0 overflow-hidden rounded-2xl border border-border shadow-sm sm:mx-0">

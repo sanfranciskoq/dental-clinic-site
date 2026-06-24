@@ -86,9 +86,10 @@
   },
   "home": {
     "hero": {
-      "eyebrow": "Austin's trusted dental home",
-      "title": "Gentle, modern dentistry — without the anxiety",
-      "subtitle": "{description} Most visits under 45 minutes. New patients welcome."
+      "line1": "Gentle, modern dentistry",
+      "line2": "for your whole family",
+      "line3": "without the anxiety",
+      "subheadline": "Same-day emergencies, digital X-rays, and transparent pricing. New patients welcome — most visits under 45 minutes."
     },
     "services": {
       "eyebrow": "Our Services",

@@ -42,9 +42,16 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} className={`${dmSans.variable} h-full`} suppressHydrationWarning>
-      <body className="flex min-h-full flex-col pb-20 antialiased md:pb-0">
-        <LocalBusinessJsonLd />
+    <html
+      lang={locale}
+      className={`${dmSans.variable} h-full`}
+      data-scroll-behavior="smooth"
+      suppressHydrationWarning
+    >
+      <head>
+        <LocalBusinessJsonLd locale={locale as Locale} />
+      </head>
+      <body className="flex min-h-full flex-col overflow-x-hidden pb-20 antialiased md:pb-0">
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider>
             <MotionProvider>

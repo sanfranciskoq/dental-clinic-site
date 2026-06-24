@@ -1,12 +1,11 @@
-import { getLocale } from "next-intl/server";
 import { getSiteConfig } from "@/lib/i18n/content";
 import type { Locale } from "@/i18n/routing";
+import { JsonLd } from "./JsonLd";
 
-export async function LocalBusinessJsonLd() {
-  const locale = (await getLocale()) as Locale;
+export function buildLocalBusinessSchema(locale: Locale) {
   const site = getSiteConfig(locale);
 
-  const schema = {
+  return {
     "@context": "https://schema.org",
     "@type": "Dentist",
     name: site.name,
@@ -43,11 +42,8 @@ export async function LocalBusinessJsonLd() {
     },
     priceRange: "$$",
   };
+}
 
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-    />
-  );
+export function LocalBusinessJsonLd({ locale }: { locale: Locale }) {
+  return <JsonLd data={buildLocalBusinessSchema(locale)} />;
 }

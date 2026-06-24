@@ -1,4 +1,5 @@
 import { siteConfig } from "@/data/site";
+import { JsonLd } from "@/components/seo/JsonLd";
 import type { FAQItem } from "@/types/faq";
 
 interface FAQJsonLdProps {
@@ -25,10 +26,5 @@ export function FAQJsonLd({ url, items }: FAQJsonLdProps) {
     },
   };
 
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-    />
-  );
+  return <JsonLd data={schema} />;
 }
