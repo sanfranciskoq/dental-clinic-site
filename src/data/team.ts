@@ -59,6 +59,64 @@ export const teamMembers: TeamMember[] = [
       "Nobody should avoid the dentist because of paperwork confusion. I'm here to fix that.",
     image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop&crop=face",
   },
+  {
+    slug: "dr-priya-patel",
+    name: "Dr. Priya Patel",
+    title: "Endodontist",
+    specialties: ["Root Canal Therapy", "Microsurgery", "Pain Management"],
+    languages: ["English", "Hindi", "Gujarati"],
+    bio: "Dr. Patel specializes in saving natural teeth through precision endodontics. She uses operating microscopes and 3D imaging to treat complex cases with minimal discomfort.",
+    education: [
+      "DDS, UCLA School of Dentistry",
+      "Certificate in Endodontics, University of Pennsylvania",
+    ],
+    affiliations: ["American Association of Endodontists"],
+    personalNote:
+      "Nothing beats keeping your natural tooth. That's why I love what I do.",
+    image: "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=400&h=400&fit=crop&crop=face",
+  },
+  {
+    slug: "dr-elena-vasquez",
+    name: "Dr. Elena Vasquez",
+    title: "Orthodontist",
+    specialties: ["Invisalign", "Braces", "Early Orthodontics"],
+    languages: ["English", "Spanish"],
+    bio: "Dr. Vasquez creates confident smiles for teens and adults. She partners closely with our general dentists to coordinate Invisalign and traditional orthodontic care in-house.",
+    education: [
+      "DDS, University of Michigan School of Dentistry",
+      "MS Orthodontics, Baylor College of Dentistry",
+    ],
+    affiliations: ["American Association of Orthodontists"],
+    personalNote:
+      "Straight teeth change more than your smile — they change how you carry yourself.",
+    image: "https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=400&h=400&fit=crop&crop=face",
+  },
+  {
+    slug: "taylor-brooks",
+    name: "Taylor Brooks, RDA",
+    title: "Lead Dental Assistant",
+    specialties: ["Chairside Assisting", "Digital Scanning", "Patient Comfort"],
+    languages: ["English"],
+    bio: "Taylor keeps procedures running smoothly chairside and helps anxious patients feel at ease. Patients often mention his calm presence during longer treatments.",
+    education: ["Registered Dental Assistant Certification, Austin Community College"],
+    affiliations: ["Texas Dental Assistants Association"],
+    personalNote:
+      "If you're nervous, tell me — we'll go at your pace. No surprises.",
+    image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&h=400&fit=crop&crop=face",
+  },
+  {
+    slug: "rachel-nguyen",
+    name: "Rachel Nguyen",
+    title: "Treatment Coordinator",
+    specialties: ["Treatment Planning", "Insurance Estimates", "Financing"],
+    languages: ["English", "Vietnamese"],
+    bio: "Rachel walks you through treatment plans, insurance breakdowns, and payment options before you commit. She makes complex dentistry feel straightforward.",
+    education: ["BS Health Sciences, Texas State University"],
+    affiliations: [],
+    personalNote:
+      "Understanding your options shouldn't require a finance degree. I'm here to translate.",
+    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face",
+  },
 ];
 
 export function getTeamMemberBySlug(slug: string): TeamMember | undefined {
