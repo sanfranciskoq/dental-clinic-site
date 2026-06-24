@@ -44,10 +44,10 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={`${dmSans.variable} h-full`} suppressHydrationWarning>
       <body className="flex min-h-full flex-col pb-20 antialiased md:pb-0">
+        <LocalBusinessJsonLd />
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider>
             <MotionProvider>
-              <LocalBusinessJsonLd />
               <SkipLink locale={locale as Locale} />
               <Header locale={locale as Locale} />
               {children}

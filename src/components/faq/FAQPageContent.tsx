@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useTranslations, useLocale } from "next-intl";
-import type { FAQCategory } from "@/types/faq";
-import { getFaqItems, getSiteConfig } from "@/lib/i18n/content";
+import { useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
+import type { FAQCategory, FAQItem } from "@/types/faq";
+import { getSiteConfig } from "@/lib/i18n/content";
 import type { Locale } from "@/i18n/routing";
 import { CategoryGrid } from "./CategoryGrid";
-import { FAQJsonLd } from "./FAQJsonLd";
 import { FAQSectionList } from "./FAQSectionList";
 import { FAQSearch } from "./FAQSearch";
 
@@ -22,12 +22,12 @@ function matchesSearch(
   return haystack.includes(normalized);
 }
 
-export function FAQPageContent() {
+export function FAQPageContent({ items }: { items: FAQItem[] }) {
   const locale = useLocale() as Locale;
   const t = useTranslations("faq");
   const tc = useTranslations("common");
   const site = getSiteConfig(locale);
-  const allItems = useMemo(() => getFaqItems(locale), [locale]);
+  const allItems = items;
 
   const [activeCategory, setActiveCategory] = useState<FAQCategory | null>(null);
   const [searchInput, setSearchInput] = useState("");
@@ -55,7 +55,6 @@ export function FAQPageContent() {
 
   return (
     <>
-      <FAQJsonLd url={`${site.url}/faq`} items={allItems} />
       <div className="mx-auto w-full max-w-4xl px-4 py-10 sm:px-6 sm:py-14 lg:py-16">
         <header className="mb-10 text-center">
           <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-primary">
