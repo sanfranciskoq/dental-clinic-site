@@ -105,9 +105,9 @@
   html {
     scroll-behavior: auto;
   }
-  *,
-  *::before,
-  *::after {
+  *:not(.motion-safe),
+  *:not(.motion-safe)::before,
+  *:not(.motion-safe)::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;

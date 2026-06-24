@@ -1,0 +1,8 @@
+{
+    "mcpServers": {
+      "motion-dev-react-mcp": {
+        "command": "npx",
+        "args": ["-y", "@orkait-ai/motion-dev-react-mcp"]
+      }
+    }
+  }

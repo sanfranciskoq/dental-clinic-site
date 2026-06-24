@@ -1,62 +1,25 @@
-"use client";
+import Image from "next/image";
 
-import dynamic from "next/dynamic";
-import { useSyncExternalStore } from "react";
-import { ServicesSmileFallback } from "./ServicesSmileFallback";
-
-const ServicesSmileScene = dynamic(
-  () =>
-    import("./ServicesSmileScene").then((mod) => mod.ServicesSmileScene),
-  {
-    ssr: false,
-    loading: () => <ServicesSmileFallback />,
-  },
-);
-
-function subscribeReducedMotion(callback: () => void) {
-  const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-  query.addEventListener("change", callback);
-  return () => query.removeEventListener("change", callback);
-}
-
-function getReducedMotionSnapshot() {
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-}
-
-function subscribeDesktop(callback: () => void) {
-  const query = window.matchMedia("(min-width: 1024px)");
-  query.addEventListener("change", callback);
-  return () => query.removeEventListener("change", callback);
-}
-
-function getDesktopSnapshot() {
-  return window.matchMedia("(min-width: 1024px)").matches;
-}
-
-function getServerSnapshot() {
-  return false;
-}
+const SERVICES_IMAGE = {
+  src: "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=1400&h=1750&fit=crop&q=90",
+  alt: "Dentist providing gentle, comprehensive dental care to a patient",
+} as const;
 
 export function ServicesVisual() {
-  const prefersReducedMotion = useSyncExternalStore(
-    subscribeReducedMotion,
-    getReducedMotionSnapshot,
-    getServerSnapshot,
-  );
-  const isDesktop = useSyncExternalStore(
-    subscribeDesktop,
-    getDesktopSnapshot,
-    getServerSnapshot,
-  );
-
-  const showScene = isDesktop && !prefersReducedMotion;
-
   return (
-    <div
-      className="relative mx-auto flex aspect-square w-full max-w-md items-center justify-center lg:mx-0 lg:max-w-none"
-      aria-hidden
-    >
-      {showScene ? <ServicesSmileScene /> : <ServicesSmileFallback />}
+    <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+      <Image
+        src={SERVICES_IMAGE.src}
+        alt={SERVICES_IMAGE.alt}
+        fill
+        className="object-cover object-center"
+        sizes="(max-width: 1024px) 100vw, 33vw"
+        priority={false}
+      />
+      <div
+        className="absolute inset-0 bg-gradient-to-t from-foreground/20 via-transparent to-transparent"
+        aria-hidden
+      />
     </div>
   );
 }
