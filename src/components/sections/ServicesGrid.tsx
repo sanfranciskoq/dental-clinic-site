@@ -1,11 +1,16 @@
-import { services } from "@/data/services";
+import { getLocale } from "next-intl/server";
+import { getServices } from "@/lib/i18n/content";
 import { Container } from "@/components/layout/Container";
 import {
   ServicesCardsAnimated,
   ServicesIntroAnimated,
 } from "@/components/sections/services/ServicesAnimated";
+import type { Locale } from "@/i18n/routing";
 
-export function ServicesGrid() {
+export async function ServicesGrid() {
+  const locale = (await getLocale()) as Locale;
+  const services = getServices(locale);
+
   return (
     <section className="py-16 md:py-24">
       <Container>

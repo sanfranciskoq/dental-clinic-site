@@ -1,0 +1,265 @@
+{
+  "metadata": {
+    "homeTitle": "Bright Smile Dental | Dentist in Austin, TX",
+    "homeDescription": "Family-friendly dental care with same-day emergencies, digital X-rays, and transparent pricing. New patients welcome.",
+    "aboutTitle": "About Us",
+    "aboutDescription": "Learn about Bright Smile Dental — our story, mission, technology, and commitment to gentle dental care in Austin.",
+    "servicesTitle": "Dental Services",
+    "servicesDescription": "Comprehensive dental services in Austin — cleanings, whitening, implants, Invisalign, emergency care, and pediatric dentistry.",
+    "teamTitle": "Our Team",
+    "teamDescription": "Meet the dentists and staff at Bright Smile Dental. Experienced, compassionate care in Austin.",
+    "faqTitle": "FAQ",
+    "faqDescription": "Frequently asked questions about Bright Smile Dental — appointments, insurance, procedures, emergencies, and pediatric care.",
+    "contactTitle": "Contact Us",
+    "contactDescription": "Contact Bright Smile Dental in Austin. Call, email, or send a message. We're here to help.",
+    "bookTitle": "Book Appointment",
+    "bookDescription": "Request an appointment at Bright Smile Dental. We'll confirm within 24 hours. New patients welcome.",
+    "privacyTitle": "Privacy Policy",
+    "privacyDescription": "Privacy policy for Bright Smile Dental.",
+    "termsTitle": "Terms of Service",
+    "termsDescription": "Terms of service for Bright Smile Dental."
+  },
+  "nav": {
+    "services": "Services",
+    "about": "About",
+    "team": "Team",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "book": "Book Appointment",
+    "main": "Main navigation",
+    "mobile": "Mobile navigation"
+  },
+  "common": {
+    "bookAppointment": "Book Appointment",
+    "learnMore": "Learn more",
+    "viewAllServices": "View all services",
+    "viewFullTeam": "View full team",
+    "viewProfile": "View profile",
+    "call": "Call {phone}",
+    "callLabel": "Call {phone}",
+    "emailUs": "Email us",
+    "meetOurTeam": "Meet our team",
+    "bookAVisit": "Book a visit",
+    "bookConsultation": "Book a consultation",
+    "service": "Service",
+    "allRightsReserved": "All rights reserved.",
+    "quickLinks": "Quick Links",
+    "contact": "Contact",
+    "hours": "Hours",
+    "address": "Address",
+    "parking": "Parking",
+    "phone": "Phone",
+    "email": "Email",
+    "welcome": "Welcome",
+    "newPatientsAccepted": "New patients accepted",
+    "yearsInPractice": "Years in practice",
+    "patientsServed": "Patients served",
+    "googleReviews": "{count} Google reviews",
+    "clinicCredentials": "Clinic credentials",
+    "skipToContent": "Skip to main content",
+    "quickActions": "Quick actions",
+    "callShort": "Call",
+    "bookShort": "Book",
+    "viewAllFaqs": "View all FAQs →",
+    "benefits": "Benefits",
+    "whatToExpect": "What to expect",
+    "commonQuestions": "Common questions",
+    "relatedServices": "Related services",
+    "bookThisService": "Book this service",
+    "bookServiceRequest": "Request an appointment and we'll confirm within 24 hours.",
+    "bookServiceCta": "Book {service}",
+    "costDisclaimer": "* Cost ranges are estimates. Final pricing depends on your individual treatment plan and insurance coverage.",
+    "notSureWhichService": "Not sure which service you need?",
+    "notSureDescription": "Book a consultation and we'll recommend the right path.",
+    "sendMessage": "Send a message",
+    "getInTouch": "Get in touch",
+    "mapTitle": "Map showing {name} location",
+    "heroImageAlt": "Bright, welcoming dental clinic treatment room",
+    "backToTeam": "Back to team"
+  },
+  "footer": {
+    "emergency": "Dental emergency?",
+    "emergencyFaq": "emergency FAQ",
+    "emergencyText": "or visit our",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Austin's trusted dental home",
+      "title": "Gentle, modern dentistry — without the anxiety",
+      "subtitle": "{description} Most visits under 45 minutes. New patients welcome."
+    },
+    "services": {
+      "eyebrow": "Our Services",
+      "title": "Complete care for every smile",
+      "description": "From preventive cleanings to implants and emergencies — one trusted team for your whole family."
+    },
+    "whyUs": {
+      "eyebrow": "Why Choose Us",
+      "title": "Dentistry that respects your time and trust"
+    },
+    "team": {
+      "eyebrow": "Our Team",
+      "title": "Meet the people behind your smile",
+      "description": "Experienced, compassionate providers who take time to listen and explain every option."
+    },
+    "testimonials": {
+      "eyebrow": "Patient Reviews",
+      "title": "Trusted by families across Austin",
+      "ratingLabel": "{rating} out of 5 stars"
+    },
+    "insurance": {
+      "eyebrow": "Insurance & Payment",
+      "title": "We accept most major plans",
+      "description": "Don't see yours?",
+      "callUs": "Call us",
+      "financing": "— we'll verify your benefits before your visit. Financing available through CareCredit."
+    },
+    "location": {
+      "eyebrow": "Visit Us",
+      "title": "Conveniently located in downtown {city}"
+    },
+    "finalCta": {
+      "title": "Ready for your healthiest smile?",
+      "description": "Book online in under two minutes or call our friendly front desk. New patients always welcome."
+    }
+  },
+  "pages": {
+    "about": {
+      "eyebrow": "About Us",
+      "title": "A practice built on trust, not transactions",
+      "missionTitle": "Our mission",
+      "technologyTitle": "Modern technology, human touch",
+      "certificationsTitle": "Certifications & standards"
+    },
+    "services": {
+      "eyebrow": "Services",
+      "title": "Dental care tailored to your goals",
+      "description": "Explore our treatments and book a consultation. Every plan starts with a conversation — never pressure."
+    },
+    "team": {
+      "eyebrow": "Our Team",
+      "title": "The people caring for your smile",
+      "description": "Get to know our providers before your visit. Every team member is committed to making you feel comfortable and informed.",
+      "ctaTitle": "Ready to meet us in person?",
+      "ctaDescription": "Schedule a new patient visit and we'll match you with the right provider.",
+      "bookWithTeam": "Book with our team"
+    },
+    "contact": {
+      "eyebrow": "Contact",
+      "title": "We'd love to hear from you",
+      "description": "Questions about insurance, services, or scheduling? Reach out and we'll respond within one business day."
+    },
+    "book": {
+      "eyebrow": "Book Appointment",
+      "title": "Request your visit",
+      "description": "Fill out the form below and we'll call you within 24 hours to confirm your appointment. For emergencies, please <callLink>call us directly</callLink>.",
+      "callDirectly": "call us directly"
+    },
+    "teamMember": {
+      "specialties": "Specialties",
+      "languages": "Languages spoken",
+      "education": "Education",
+      "affiliations": "Professional affiliations",
+      "personalNote": "A note from {name}",
+      "bookWith": "Book with {name}"
+    }
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "description": "Answers to common questions about appointments, insurance, procedures, and emergencies.",
+    "filterByCategory": "Filter by category",
+    "searchPlaceholder": "Search questions…",
+    "selectCategoryPrompt": "Select a topic above to browse questions, or use search to find answers across all categories.",
+    "noResultsWithCall": "No questions match your search. Try different keywords or {callLink} for help.",
+    "callUsShort": "call us",
+    "searchLabel": "Search frequently asked questions",
+    "noResults": "No questions match your search in this category.",
+    "stillHaveQuestions": "Still have questions?",
+    "stillHaveQuestionsDescription": "Our team is happy to help. Call or email us anytime.",
+    "categories": {
+      "general": "General",
+      "appointments": "Appointments",
+      "insurance": "Insurance & Payment",
+      "procedures": "Procedures",
+      "emergency": "Emergency",
+      "pediatric": "Pediatric"
+    }
+  },
+  "forms": {
+    "contact": {
+      "name": "Full name",
+      "email": "Email",
+      "phone": "Phone",
+      "message": "Message",
+      "submit": "Send message",
+      "sending": "Sending…",
+      "successTitle": "Message sent!",
+      "successDescription": "Thanks for reaching out. We'll get back to you within one business day.",
+      "sendAnother": "Send another message",
+      "toastSuccess": "Message sent successfully!"
+    },
+    "book": {
+      "name": "Full name",
+      "email": "Email",
+      "phone": "Phone",
+      "preferredDate": "Preferred date",
+      "preferredTime": "Preferred time",
+      "selectTime": "Select a time",
+      "service": "Service",
+      "selectService": "Select a service",
+      "patientType": "Patient type",
+      "newPatient": "New patient",
+      "returningPatient": "Returning patient",
+      "notes": "Additional notes (optional)",
+      "notesPlaceholder": "Anything we should know before your visit?",
+      "privacy": "I agree to the <privacyLink>privacy policy</privacyLink> and consent to be contacted about my appointment.",
+      "privacyLink": "privacy policy",
+      "submit": "Request appointment",
+      "submitting": "Submitting…",
+      "successTitle": "Request received!",
+      "successDescription": "We'll call you within 24 hours to confirm your appointment time.",
+      "bookAnother": "Book another appointment",
+      "toastSuccess": "Appointment request received!"
+    }
+  },
+  "validation": {
+    "nameMin": "Name must be at least 2 characters",
+    "emailInvalid": "Please enter a valid email",
+    "phoneInvalid": "Please enter a valid phone number",
+    "messageMin": "Message must be at least 10 characters",
+    "dateRequired": "Please select a preferred date",
+    "timeRequired": "Please select a preferred time",
+    "serviceRequired": "Please select a service",
+    "patientTypeRequired": "Please select patient type",
+    "privacyRequired": "You must accept the privacy policy"
+  },
+  "legal": {
+    "lastUpdated": "Last updated: {date}",
+    "privacy": {
+      "intro": "{name} (\"we,\" \"us,\" or \"our\") respects your privacy. This policy describes how we collect, use, and protect your personal information when you visit our website or use our services.",
+      "collectTitle": "Information we collect",
+      "collectBody": "When you submit a contact or appointment form, we collect your name, email address, phone number, and any information you provide in your message. We may also collect technical data such as browser type and pages visited through standard analytics tools.",
+      "useTitle": "How we use your information",
+      "useBody": "We use your information to respond to inquiries, schedule appointments, send reminders, and improve our services. We do not sell your personal information to third parties.",
+      "securityTitle": "Data security",
+      "securityBody": "We implement appropriate technical and organizational measures to protect your data. However, no method of transmission over the internet is 100% secure.",
+      "hipaaTitle": "HIPAA notice",
+      "hipaaBody": "Protected health information (PHI) is handled in accordance with HIPAA regulations. Information submitted through this website for scheduling purposes is not considered PHI until you become a patient. Full HIPAA notices are provided at your first visit.",
+      "contactTitle": "Contact us",
+      "contactBody": "If you have questions about this privacy policy, contact us at {email} or {phone}."
+    },
+    "terms": {
+      "intro": "By using the {name} website and services, you agree to these terms. Please read them carefully.",
+      "servicesTitle": "Medical services disclaimer",
+      "servicesBody": "Information on this website is for general educational purposes and does not constitute medical advice. Always consult a qualified dentist for diagnosis and treatment.",
+      "appointmentsTitle": "Appointments",
+      "appointmentsBody": "Online appointment requests are subject to confirmation. We reserve the right to reschedule when necessary. Please provide accurate contact information.",
+      "liabilityTitle": "Limitation of liability",
+      "liabilityBody": "To the fullest extent permitted by law, {name} shall not be liable for any indirect, incidental, or consequential damages arising from use of this website.",
+      "contactTitle": "Contact",
+      "contactBody": "Questions about these terms? Email {email} or call {phone}."
+    }
+  }
+}

@@ -1,33 +1,46 @@
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
-import { teamMembers } from "@/data/team";
-import { siteConfig } from "@/lib/constants";
+import { getTeamMembers } from "@/lib/i18n/content";
 import { createPageMetadata } from "@/lib/metadata";
 import { Container } from "@/components/layout/Container";
 import { CTALink } from "@/components/shared/CTALink";
+import type { Locale } from "@/i18n/routing";
 
-export const metadata = createPageMetadata({
-  title: "Our Team",
-  description: `Meet the dentists and staff at ${siteConfig.name}. Experienced, compassionate care in ${siteConfig.city}.`,
-  path: "/team",
-});
+interface TeamPageProps {
+  params: Promise<{ locale: string }>;
+}
 
-export default function TeamPage() {
+export async function generateMetadata({ params }: TeamPageProps) {
+  const { locale } = await params;
+  return createPageMetadata({
+    locale,
+    titleKey: "teamTitle",
+    descriptionKey: "teamDescription",
+    path: "/team",
+  });
+}
+
+export default async function TeamPage({ params }: TeamPageProps) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
+  const t = await getTranslations("pages.team");
+  const tc = await getTranslations("common");
+  const teamMembers = getTeamMembers(locale as Locale);
+
   return (
     <main id="main-content" className="py-12 md:py-16">
       <Container>
         <div className="mx-auto max-w-2xl text-center">
           <p className="text-sm font-semibold uppercase tracking-wide text-primary">
-            Our Team
+            {t("eyebrow")}
           </p>
           <h1 className="mt-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            The people caring for your smile
+            {t("title")}
           </h1>
-          <p className="mt-4 text-muted-foreground">
-            Get to know our providers before your visit. Every team member is
-            committed to making you feel comfortable and informed.
-          </p>
+          <p className="mt-4 text-muted-foreground">{t("description")}</p>
         </div>
 
         <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-2">
@@ -47,9 +60,7 @@ export default function TeamPage() {
                 />
               </div>
               <div className="flex flex-1 flex-col">
-                <h2 className="text-lg font-semibold text-foreground">
-                  {member.name}
-                </h2>
+                <h2 className="text-lg font-semibold text-foreground">{member.name}</h2>
                 <p className="text-sm text-primary">{member.title}</p>
                 <p className="mt-2 text-sm text-muted-foreground">
                   {member.specialties.join(" · ")}
@@ -58,7 +69,7 @@ export default function TeamPage() {
                   {member.languages.join(", ")}
                 </p>
                 <span className="mt-auto inline-flex items-center gap-1 pt-3 text-sm font-semibold text-primary">
-                  View profile
+                  {tc("viewProfile")}
                   <ArrowRight
                     className="size-4 transition-transform group-hover:translate-x-0.5"
                     aria-hidden
@@ -70,7 +81,7 @@ export default function TeamPage() {
         </div>
 
         <div className="mt-12 text-center">
-          <CTALink href="/book">Book with our team</CTALink>
+          <CTALink href="/book">{t("bookWithTeam")}</CTALink>
         </div>
       </Container>
     </main>

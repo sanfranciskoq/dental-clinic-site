@@ -1,20 +1,25 @@
-import { siteConfig } from "@/lib/constants";
+import { getLocale } from "next-intl/server";
+import { getSiteConfig } from "@/lib/i18n/content";
+import type { Locale } from "@/i18n/routing";
 
-export function LocalBusinessJsonLd() {
+export async function LocalBusinessJsonLd() {
+  const locale = (await getLocale()) as Locale;
+  const site = getSiteConfig(locale);
+
   const schema = {
     "@context": "https://schema.org",
     "@type": "Dentist",
-    name: siteConfig.name,
-    description: siteConfig.description,
-    url: siteConfig.url,
-    telephone: siteConfig.phone,
-    email: siteConfig.email,
+    name: site.name,
+    description: site.description,
+    url: site.url,
+    telephone: site.phone,
+    email: site.email,
     address: {
       "@type": "PostalAddress",
-      streetAddress: siteConfig.address.street,
-      addressLocality: siteConfig.address.city,
-      addressRegion: siteConfig.address.state,
-      postalCode: siteConfig.address.zip,
+      streetAddress: site.address.street,
+      addressLocality: site.address.city,
+      addressRegion: site.address.state,
+      postalCode: site.address.zip,
       addressCountry: "US",
     },
     openingHoursSpecification: [
@@ -33,8 +38,8 @@ export function LocalBusinessJsonLd() {
     ],
     aggregateRating: {
       "@type": "AggregateRating",
-      ratingValue: siteConfig.stats.rating,
-      reviewCount: siteConfig.stats.reviewCount,
+      ratingValue: site.stats.rating,
+      reviewCount: site.stats.reviewCount,
     },
     priceRange: "$$",
   };

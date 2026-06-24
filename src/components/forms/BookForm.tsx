@@ -1,27 +1,52 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 import { CheckCircle2 } from "lucide-react";
-import { services } from "@/data/services";
-import {
-  bookFormSchema,
-  TIME_SLOTS,
-  type BookFormData,
-} from "@/lib/validations";
+import { Link } from "@/i18n/navigation";
+import { TIME_SLOTS } from "@/lib/validations";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import type { Service } from "@/types/service";
 
 interface BookFormProps {
   defaultService?: string;
+  services: Service[];
 }
 
-export function BookForm({ defaultService }: BookFormProps) {
+export function BookForm({ defaultService, services }: BookFormProps) {
+  const t = useTranslations("forms.book");
+  const tv = useTranslations("validation");
   const [submitted, setSubmitted] = useState(false);
+
+  const bookFormSchema = useMemo(
+    () =>
+      z.object({
+        name: z.string().min(2, tv("nameMin")),
+        email: z.string().email(tv("emailInvalid")),
+        phone: z.string().min(10, tv("phoneInvalid")),
+        preferredDate: z.string().min(1, tv("dateRequired")),
+        preferredTime: z.string().min(1, tv("timeRequired")),
+        service: z.string().min(1, tv("serviceRequired")),
+        patientType: z.enum(["new", "returning"], {
+          message: tv("patientTypeRequired"),
+        }),
+        notes: z.string().optional(),
+        privacyAccepted: z.literal(true, {
+          message: tv("privacyRequired"),
+        }),
+      }),
+    [tv],
+  );
+
+  type BookFormData = z.infer<typeof bookFormSchema>;
+
   const {
     register,
     handleSubmit,
@@ -40,7 +65,7 @@ export function BookForm({ defaultService }: BookFormProps) {
     await new Promise((r) => setTimeout(r, 600));
     console.log("Book form submission:", data);
     setSubmitted(true);
-    toast.success("Appointment request received!");
+    toast.success(t("toastSuccess"));
     reset();
   };
 
@@ -49,23 +74,18 @@ export function BookForm({ defaultService }: BookFormProps) {
   if (submitted) {
     return (
       <div className="rounded-xl border border-primary/20 bg-secondary/50 p-8 text-center">
-        <CheckCircle2
-          className="mx-auto size-12 text-primary"
-          aria-hidden
-        />
+        <CheckCircle2 className="mx-auto size-12 text-primary" aria-hidden />
         <h3 className="mt-4 text-xl font-semibold text-foreground">
-          Request received!
+          {t("successTitle")}
         </h3>
-        <p className="mt-2 text-muted-foreground">
-          We&apos;ll call you within 24 hours to confirm your appointment time.
-        </p>
+        <p className="mt-2 text-muted-foreground">{t("successDescription")}</p>
         <Button
           type="button"
           variant="outline"
           className="mt-6 rounded-full"
           onClick={() => setSubmitted(false)}
         >
-          Book another appointment
+          {t("bookAnother")}
         </Button>
       </div>
     );
@@ -75,7 +95,7 @@ export function BookForm({ defaultService }: BookFormProps) {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
-          <Label htmlFor="book-name">Full name</Label>
+          <Label htmlFor="book-name">{t("name")}</Label>
           <Input
             id="book-name"
             className="mt-1.5 min-h-11 rounded-xl"
@@ -90,7 +110,7 @@ export function BookForm({ defaultService }: BookFormProps) {
         </div>
 
         <div>
-          <Label htmlFor="book-phone">Phone</Label>
+          <Label htmlFor="book-phone">{t("phone")}</Label>
           <Input
             id="book-phone"
             type="tel"
@@ -107,7 +127,7 @@ export function BookForm({ defaultService }: BookFormProps) {
       </div>
 
       <div>
-        <Label htmlFor="book-email">Email</Label>
+        <Label htmlFor="book-email">{t("email")}</Label>
         <Input
           id="book-email"
           type="email"
@@ -124,7 +144,7 @@ export function BookForm({ defaultService }: BookFormProps) {
 
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
-          <Label htmlFor="book-date">Preferred date</Label>
+          <Label htmlFor="book-date">{t("preferredDate")}</Label>
           <Input
             id="book-date"
             type="date"
@@ -141,14 +161,14 @@ export function BookForm({ defaultService }: BookFormProps) {
         </div>
 
         <div>
-          <Label htmlFor="book-time">Preferred time</Label>
+          <Label htmlFor="book-time">{t("preferredTime")}</Label>
           <select
             id="book-time"
             className="mt-1.5 flex min-h-11 w-full rounded-xl border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             aria-invalid={!!errors.preferredTime}
             {...register("preferredTime")}
           >
-            <option value="">Select a time</option>
+            <option value="">{t("selectTime")}</option>
             {TIME_SLOTS.map((slot) => (
               <option key={slot} value={slot}>
                 {slot}
@@ -165,14 +185,14 @@ export function BookForm({ defaultService }: BookFormProps) {
 
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
-          <Label htmlFor="book-service">Service</Label>
+          <Label htmlFor="book-service">{t("service")}</Label>
           <select
             id="book-service"
             className="mt-1.5 flex min-h-11 w-full rounded-xl border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             aria-invalid={!!errors.service}
             {...register("service")}
           >
-            <option value="">Select a service</option>
+            <option value="">{t("selectService")}</option>
             {services.map((s) => (
               <option key={s.slug} value={s.slug}>
                 {s.title}
@@ -187,7 +207,7 @@ export function BookForm({ defaultService }: BookFormProps) {
         </div>
 
         <fieldset>
-          <legend className="text-sm font-medium">Patient type</legend>
+          <legend className="text-sm font-medium">{t("patientType")}</legend>
           <div className="mt-2 flex gap-4">
             <label className="flex items-center gap-2 text-sm">
               <input
@@ -196,7 +216,7 @@ export function BookForm({ defaultService }: BookFormProps) {
                 className="size-4 accent-primary"
                 {...register("patientType")}
               />
-              New patient
+              {t("newPatient")}
             </label>
             <label className="flex items-center gap-2 text-sm">
               <input
@@ -205,7 +225,7 @@ export function BookForm({ defaultService }: BookFormProps) {
                 className="size-4 accent-primary"
                 {...register("patientType")}
               />
-              Returning
+              {t("returningPatient")}
             </label>
           </div>
           {errors.patientType && (
@@ -217,12 +237,12 @@ export function BookForm({ defaultService }: BookFormProps) {
       </div>
 
       <div>
-        <Label htmlFor="book-notes">Additional notes (optional)</Label>
+        <Label htmlFor="book-notes">{t("notes")}</Label>
         <Textarea
           id="book-notes"
           rows={3}
           className="mt-1.5 rounded-xl"
-          placeholder="Any concerns or preferences we should know?"
+          placeholder={t("notesPlaceholder")}
           {...register("notes")}
         />
       </div>
@@ -235,11 +255,13 @@ export function BookForm({ defaultService }: BookFormProps) {
             {...register("privacyAccepted")}
           />
           <span>
-            I agree to the{" "}
-            <a href="/privacy" className="text-primary underline">
-              privacy policy
-            </a>{" "}
-            and consent to being contacted about my appointment.
+            {t.rich("privacy", {
+              privacyLink: (chunks) => (
+                <Link href="/privacy" className="text-primary underline">
+                  {chunks}
+                </Link>
+              ),
+            })}
           </span>
         </label>
         {errors.privacyAccepted && (
@@ -255,7 +277,7 @@ export function BookForm({ defaultService }: BookFormProps) {
         className="w-full rounded-full min-h-11"
         size="lg"
       >
-        {isSubmitting ? "Submitting..." : "Request Appointment"}
+        {isSubmitting ? t("submitting") : t("submit")}
       </Button>
     </form>
   );

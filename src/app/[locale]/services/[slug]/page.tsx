@@ -1,14 +1,15 @@
-import Link from "next/link";
+import { setRequestLocale, getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
 import { Clock, DollarSign } from "lucide-react";
+import { services } from "@/data/services";
 import {
-  services,
-  getServiceBySlug,
-  getRelatedServices,
-} from "@/data/services";
-import { getFaqByIds } from "@/data/faq";
-import { createPageMetadata } from "@/lib/metadata";
-import { siteConfig } from "@/lib/constants";
+  getLocalizedServiceBySlug,
+  getLocalizedRelatedServices,
+  getFaqByIds,
+  getSiteConfig,
+} from "@/lib/i18n/content";
+import { createDynamicPageMetadata } from "@/lib/metadata";
 import { Container } from "@/components/layout/Container";
 import { CTALink } from "@/components/shared/CTALink";
 import { DynamicIcon } from "@/components/shared/DynamicIcon";
@@ -18,34 +19,45 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { routing, type Locale } from "@/i18n/routing";
 
 interface ServicePageProps {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }
 
 export function generateStaticParams() {
-  return services.map((service) => ({ slug: service.slug }));
+  return routing.locales.flatMap((locale) =>
+    services.map((service) => ({ locale, slug: service.slug })),
+  );
 }
 
 export async function generateMetadata({ params }: ServicePageProps) {
-  const { slug } = await params;
-  const service = getServiceBySlug(slug);
+  const { locale, slug } = await params;
+  const service = getLocalizedServiceBySlug(locale as Locale, slug);
   if (!service) return {};
 
-  return createPageMetadata({
+  const site = getSiteConfig(locale as Locale);
+
+  return createDynamicPageMetadata({
+    locale,
     title: service.title,
-    description: `${service.shortDescription} Available at ${siteConfig.name} in ${siteConfig.city}.`,
+    description: `${service.shortDescription} Available at ${site.name} in ${site.city}.`,
     path: `/services/${slug}`,
   });
 }
 
 export default async function ServiceDetailPage({ params }: ServicePageProps) {
-  const { slug } = await params;
-  const service = getServiceBySlug(slug);
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
+
+  const typedLocale = locale as Locale;
+  const service = getLocalizedServiceBySlug(typedLocale, slug);
   if (!service) notFound();
 
-  const faqItems = getFaqByIds(service.faqIds);
-  const related = getRelatedServices(slug);
+  const tc = await getTranslations("common");
+  const faqItems = getFaqByIds(typedLocale, service.faqIds);
+  const related = getLocalizedRelatedServices(typedLocale, slug);
+  const site = getSiteConfig(typedLocale);
 
   return (
     <main id="main-content" className="py-12 md:py-16">
@@ -57,16 +69,14 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
                 <DynamicIcon name={service.icon} className="size-6" />
               </div>
               <p className="text-sm font-semibold uppercase tracking-wide text-primary">
-                Service
+                {tc("service")}
               </p>
             </div>
 
             <h1 className="mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               {service.title}
             </h1>
-            <p className="mt-4 text-lg text-muted-foreground">
-              {service.description}
-            </p>
+            <p className="mt-4 text-lg text-muted-foreground">{service.description}</p>
 
             <div className="mt-6 flex flex-wrap gap-4 text-sm">
               <div className="flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2">
@@ -80,7 +90,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
             </div>
 
             <section className="mt-10">
-              <h2 className="text-2xl font-bold text-foreground">Benefits</h2>
+              <h2 className="text-2xl font-bold text-foreground">{tc("benefits")}</h2>
               <ul className="mt-4 space-y-2">
                 {service.benefits.map((benefit) => (
                   <li
@@ -95,9 +105,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
             </section>
 
             <section className="mt-10">
-              <h2 className="text-2xl font-bold text-foreground">
-                What to expect
-              </h2>
+              <h2 className="text-2xl font-bold text-foreground">{tc("whatToExpect")}</h2>
               <ol className="mt-6 space-y-6">
                 {service.steps.map((step, index) => (
                   <li key={step.title} className="flex gap-4">
@@ -105,9 +113,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
                       {index + 1}
                     </span>
                     <div>
-                      <h3 className="font-semibold text-foreground">
-                        {step.title}
-                      </h3>
+                      <h3 className="font-semibold text-foreground">{step.title}</h3>
                       <p className="mt-1 text-sm text-muted-foreground">
                         {step.description}
                       </p>
@@ -120,7 +126,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
             {faqItems.length > 0 && (
               <section className="mt-10">
                 <h2 className="text-2xl font-bold text-foreground">
-                  Common questions
+                  {tc("commonQuestions")}
                 </h2>
                 <Accordion className="mt-4">
                   {faqItems.map((item) => (
@@ -134,14 +140,14 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
                   href="/faq"
                   className="mt-4 inline-block text-sm font-semibold text-primary hover:underline"
                 >
-                  View all FAQs →
+                  {tc("viewAllFaqs")}
                 </Link>
               </section>
             )}
 
             <section className="mt-10">
               <h2 className="text-2xl font-bold text-foreground">
-                Related services
+                {tc("relatedServices")}
               </h2>
               <ul className="mt-4 space-y-2">
                 {related.map((rel) => (
@@ -161,26 +167,25 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
           <aside className="lg:sticky lg:top-24 lg:self-start">
             <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
               <h2 className="text-lg font-semibold text-foreground">
-                Book this service
+                {tc("bookThisService")}
               </h2>
               <p className="mt-2 text-sm text-muted-foreground">
-                Request an appointment and we&apos;ll confirm within 24 hours.
+                {tc("bookServiceRequest")}
               </p>
               <CTALink
                 href={`/book?service=${service.slug}`}
                 className="mt-5 w-full"
               >
-                Book {service.title}
+                {tc("bookServiceCta", { service: service.title })}
               </CTALink>
               <a
-                href={siteConfig.phoneHref}
+                href={site.phoneHref}
                 className="mt-3 flex min-h-11 w-full items-center justify-center rounded-full border border-border text-sm font-semibold transition-colors hover:bg-muted"
               >
-                Call {siteConfig.phone}
+                {tc("call", { phone: site.phone })}
               </a>
               <p className="mt-4 text-xs text-muted-foreground">
-                * Cost ranges are estimates. Final pricing depends on your
-                individual treatment plan and insurance coverage.
+                {tc("costDisclaimer")}
               </p>
             </div>
           </aside>

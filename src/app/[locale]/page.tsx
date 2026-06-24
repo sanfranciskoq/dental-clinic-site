@@ -1,3 +1,4 @@
+import { setRequestLocale } from "next-intl/server";
 import { Hero } from "@/components/sections/Hero";
 import { TrustBar } from "@/components/sections/TrustBar";
 import { ServicesGrid } from "@/components/sections/ServicesGrid";
@@ -8,15 +9,25 @@ import { InsuranceBar } from "@/components/sections/InsuranceBar";
 import { LocationHours } from "@/components/sections/LocationHours";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import { createPageMetadata } from "@/lib/metadata";
-import { siteConfig } from "@/lib/constants";
 
-export const metadata = createPageMetadata({
-  title: `${siteConfig.name} | Dentist in ${siteConfig.city}, ${siteConfig.state}`,
-  description: siteConfig.description,
-  path: "/",
-});
+interface HomePageProps {
+  params: Promise<{ locale: string }>;
+}
 
-export default function HomePage() {
+export async function generateMetadata({ params }: HomePageProps) {
+  const { locale } = await params;
+  return createPageMetadata({
+    locale,
+    titleKey: "homeTitle",
+    descriptionKey: "homeDescription",
+    path: "/",
+  });
+}
+
+export default async function HomePage({ params }: HomePageProps) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   return (
     <main id="main-content">
       <Hero />

@@ -1,6 +1,10 @@
 "use client";
 
 import type { FAQItem } from "@/types/faq";
+import { useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
+import { getSiteConfig } from "@/lib/i18n/content";
+import type { Locale } from "@/i18n/routing";
 import {
   Accordion,
   AccordionContent,
@@ -17,11 +21,14 @@ export function FAQSectionList({
   items,
   showCategoryPrompt,
 }: FAQSectionListProps) {
+  const t = useTranslations("faq");
+  const locale = useLocale() as Locale;
+  const site = getSiteConfig(locale);
+
   if (showCategoryPrompt) {
     return (
       <p className="rounded-xl border border-dashed border-border bg-muted/30 px-6 py-10 text-center text-muted-foreground">
-        Select a topic above to browse questions, or use search to find
-        answers across all categories.
+        {t("selectCategoryPrompt")}
       </p>
     );
   }
@@ -29,11 +36,13 @@ export function FAQSectionList({
   if (items.length === 0) {
     return (
       <p className="rounded-xl border border-border bg-card px-6 py-10 text-center text-muted-foreground">
-        No questions match your search. Try different keywords or{" "}
-        <a href="tel:+15125550142" className="font-semibold text-primary">
-          call us
-        </a>{" "}
-        for help.
+        {t.rich("noResultsWithCall", {
+          callLink: () => (
+            <a href={site.phoneHref} className="font-semibold text-primary">
+              {t("callUsShort")}
+            </a>
+          ),
+        })}
       </p>
     );
   }
@@ -41,7 +50,11 @@ export function FAQSectionList({
   return (
     <Accordion>
       {items.map((item) => (
-        <AccordionItem key={item.id} value={item.id} id={item.category === "emergency" ? item.id : undefined}>
+        <AccordionItem
+          key={item.id}
+          value={item.id}
+          id={item.category === "emergency" ? item.id : undefined}
+        >
           <AccordionTrigger>{item.question}</AccordionTrigger>
           <AccordionContent>{item.answer}</AccordionContent>
         </AccordionItem>

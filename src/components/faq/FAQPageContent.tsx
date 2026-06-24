@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { getFaqItems } from "@/data/faq";
-import { siteConfig } from "@/lib/constants";
+import { useTranslations, useLocale } from "next-intl";
 import type { FAQCategory } from "@/types/faq";
+import { getFaqItems, getSiteConfig } from "@/lib/i18n/content";
+import type { Locale } from "@/i18n/routing";
 import { CategoryGrid } from "./CategoryGrid";
 import { FAQJsonLd } from "./FAQJsonLd";
 import { FAQSectionList } from "./FAQSectionList";
@@ -22,9 +23,13 @@ function matchesSearch(
 }
 
 export function FAQPageContent() {
-  const [activeCategory, setActiveCategory] = useState<FAQCategory | null>(
-    null,
-  );
+  const locale = useLocale() as Locale;
+  const t = useTranslations("faq");
+  const tc = useTranslations("common");
+  const site = getSiteConfig(locale);
+  const allItems = useMemo(() => getFaqItems(locale), [locale]);
+
+  const [activeCategory, setActiveCategory] = useState<FAQCategory | null>(null);
   const [searchInput, setSearchInput] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -36,7 +41,7 @@ export function FAQPageContent() {
   const filteredItems = useMemo(() => {
     if (!activeCategory) return [];
 
-    return getFaqItems().filter(
+    return allItems.filter(
       (item) =>
         item.category === activeCategory &&
         matchesSearch(
@@ -46,22 +51,21 @@ export function FAQPageContent() {
           item.keywords,
         ),
     );
-  }, [activeCategory, searchQuery]);
+  }, [activeCategory, searchQuery, allItems]);
 
   return (
     <>
-      <FAQJsonLd url={`${siteConfig.url}/faq`} />
+      <FAQJsonLd url={`${site.url}/faq`} items={allItems} />
       <div className="mx-auto w-full max-w-4xl px-4 py-10 sm:px-6 sm:py-14 lg:py-16">
         <header className="mb-10 text-center">
           <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-primary">
-            {siteConfig.name}
+            {site.name}
           </p>
           <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Frequently Asked Questions
+            {t("title")}
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-muted-foreground sm:text-lg">
-            Answers to common questions about appointments, insurance,
-            procedures, and emergencies.
+            {t("description")}
           </p>
         </header>
 
@@ -80,23 +84,23 @@ export function FAQPageContent() {
 
         <aside className="mt-12 rounded-2xl border border-primary/20 bg-secondary/50 px-6 py-8 text-center sm:px-8">
           <h2 className="text-xl font-semibold text-foreground">
-            Still have questions?
+            {t("stillHaveQuestions")}
           </h2>
           <p className="mt-2 text-muted-foreground">
-            Our team is happy to help. Call or email us anytime.
+            {t("stillHaveQuestionsDescription")}
           </p>
           <div className="mt-5 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <a
-              href={siteConfig.phoneHref}
+              href={site.phoneHref}
               className="inline-flex min-h-11 items-center justify-center rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
-              Call {siteConfig.phone}
+              {tc("call", { phone: site.phone })}
             </a>
             <a
-              href={`mailto:${siteConfig.email}`}
+              href={`mailto:${site.email}`}
               className="inline-flex min-h-11 items-center justify-center rounded-full border border-border bg-card px-6 py-2.5 text-sm font-semibold text-primary transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
-              Email us
+              {tc("emailUs")}
             </a>
           </div>
         </aside>

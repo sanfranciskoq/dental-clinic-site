@@ -1,13 +1,12 @@
-import { getFaqItems } from "@/data/faq";
-import { siteConfig } from "@/lib/constants";
+import { siteConfig } from "@/data/site";
+import type { FAQItem } from "@/types/faq";
 
 interface FAQJsonLdProps {
   url?: string;
+  items: FAQItem[];
 }
 
-export function FAQJsonLd({ url }: FAQJsonLdProps) {
-  const items = getFaqItems();
-
+export function FAQJsonLd({ url, items }: FAQJsonLdProps) {
   const schema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
