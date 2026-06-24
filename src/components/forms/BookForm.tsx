@@ -3,12 +3,16 @@
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { toast } from "sonner";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { CheckCircle2 } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import { TIME_SLOTS } from "@/lib/validations";
+import {
+  createBookFormSchema,
+  TIME_SLOTS,
+  type BookFormData,
+} from "@/lib/validations";
+import type { Locale } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,31 +25,28 @@ interface BookFormProps {
 }
 
 export function BookForm({ defaultService, services }: BookFormProps) {
+  const locale = useLocale() as Locale;
   const t = useTranslations("forms.book");
   const tv = useTranslations("validation");
   const [submitted, setSubmitted] = useState(false);
 
   const bookFormSchema = useMemo(
     () =>
-      z.object({
-        name: z.string().min(2, tv("nameMin")),
-        email: z.string().email(tv("emailInvalid")),
-        phone: z.string().min(10, tv("phoneInvalid")),
-        preferredDate: z.string().min(1, tv("dateRequired")),
-        preferredTime: z.string().min(1, tv("timeRequired")),
-        service: z.string().min(1, tv("serviceRequired")),
-        patientType: z.enum(["new", "returning"], {
-          message: tv("patientTypeRequired"),
-        }),
-        notes: z.string().optional(),
-        privacyAccepted: z.literal(true, {
-          message: tv("privacyRequired"),
-        }),
+      createBookFormSchema({
+        nameRequired: tv("nameRequired"),
+        nameMin: tv("nameMin"),
+        emailRequired: tv("emailRequired"),
+        emailInvalid: tv("emailInvalid"),
+        phoneRequired: tv("phoneRequired"),
+        phoneCountryCode: tv("phoneCountryCode"),
+        dateRequired: tv("dateRequired"),
+        timeRequired: tv("timeRequired"),
+        serviceRequired: tv("serviceRequired"),
+        patientTypeRequired: tv("patientTypeRequired"),
+        privacyRequired: tv("privacyRequired"),
       }),
     [tv],
   );
-
-  type BookFormData = z.infer<typeof bookFormSchema>;
 
   const {
     register,
@@ -62,11 +63,31 @@ export function BookForm({ defaultService, services }: BookFormProps) {
   });
 
   const onSubmit = async (data: BookFormData) => {
-    await new Promise((r) => setTimeout(r, 600));
-    console.log("Book form submission:", data);
-    setSubmitted(true);
-    toast.success(t("toastSuccess"));
-    reset();
+    try {
+      const response = await fetch("/api/appointments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...data, locale }),
+      });
+
+      if (!response.ok) {
+        const payload = (await response.json().catch(() => null)) as {
+          error?: string;
+        } | null;
+        toast.error(payload?.error ?? t("toastError"));
+        return;
+      }
+
+      setSubmitted(true);
+      toast.success(t("toastSuccess"));
+      reset({
+        service: defaultService ?? "",
+        patientType: "new",
+        privacyAccepted: undefined,
+      });
+    } catch {
+      toast.error(t("toastError"));
+    }
   };
 
   const today = new Date().toISOString().split("T")[0];
@@ -98,6 +119,8 @@ export function BookForm({ defaultService, services }: BookFormProps) {
           <Label htmlFor="book-name">{t("name")}</Label>
           <Input
             id="book-name"
+            autoComplete="name"
+            required
             className="mt-1.5 min-h-11 rounded-xl"
             aria-invalid={!!errors.name}
             {...register("name")}
@@ -114,6 +137,9 @@ export function BookForm({ defaultService, services }: BookFormProps) {
           <Input
             id="book-phone"
             type="tel"
+            autoComplete="tel"
+            required
+            placeholder={t("phonePlaceholder")}
             className="mt-1.5 min-h-11 rounded-xl"
             aria-invalid={!!errors.phone}
             {...register("phone")}
@@ -131,6 +157,9 @@ export function BookForm({ defaultService, services }: BookFormProps) {
         <Input
           id="book-email"
           type="email"
+          autoComplete="email"
+          required
+          placeholder={t("emailPlaceholder")}
           className="mt-1.5 min-h-11 rounded-xl"
           aria-invalid={!!errors.email}
           {...register("email")}
@@ -149,6 +178,7 @@ export function BookForm({ defaultService, services }: BookFormProps) {
             id="book-date"
             type="date"
             min={today}
+            required
             className="mt-1.5 min-h-11 rounded-xl"
             aria-invalid={!!errors.preferredDate}
             {...register("preferredDate")}
@@ -164,6 +194,7 @@ export function BookForm({ defaultService, services }: BookFormProps) {
           <Label htmlFor="book-time">{t("preferredTime")}</Label>
           <select
             id="book-time"
+            required
             className="mt-1.5 flex min-h-11 w-full rounded-xl border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             aria-invalid={!!errors.preferredTime}
             {...register("preferredTime")}
@@ -188,6 +219,7 @@ export function BookForm({ defaultService, services }: BookFormProps) {
           <Label htmlFor="book-service">{t("service")}</Label>
           <select
             id="book-service"
+            required
             className="mt-1.5 flex min-h-11 w-full rounded-xl border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             aria-invalid={!!errors.service}
             {...register("service")}
@@ -251,6 +283,7 @@ export function BookForm({ defaultService, services }: BookFormProps) {
         <label className="flex items-start gap-2 text-sm">
           <input
             type="checkbox"
+            required
             className="mt-1 size-4 accent-primary"
             {...register("privacyAccepted")}
           />

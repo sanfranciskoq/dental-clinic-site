@@ -215,6 +215,8 @@
       "returningPatient": "Returning patient",
       "notes": "Additional notes (optional)",
       "notesPlaceholder": "Anything we should know before your visit?",
+      "emailPlaceholder": "you@domain.com",
+      "phonePlaceholder": "+1 512 555 0142",
       "privacy": "I agree to the <privacyLink>privacy policy</privacyLink> and consent to be contacted about my appointment.",
       "privacyLink": "privacy policy",
       "submit": "Request appointment",
@@ -222,12 +224,17 @@
       "successTitle": "Request received!",
       "successDescription": "We'll call you within 24 hours to confirm your appointment time.",
       "bookAnother": "Book another appointment",
-      "toastSuccess": "Appointment request received!"
+      "toastSuccess": "Appointment request received!",
+      "toastError": "Unable to submit your request. Please try again."
     }
   },
   "validation": {
+    "nameRequired": "Full name is required",
     "nameMin": "Name must be at least 2 characters",
-    "emailInvalid": "Please enter a valid email",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Enter a valid email (example@domain.com)",
+    "phoneRequired": "Phone number is required",
+    "phoneCountryCode": "Include country code (e.g. +1 512 555 0142)",
     "phoneInvalid": "Please enter a valid phone number",
     "messageMin": "Message must be at least 10 characters",
     "dateRequired": "Please select a preferred date",

@@ -129,6 +129,11 @@
   html {
     @apply font-sans;
   }
+
+  html:lang(uk) {
+    --font-sans: var(--font-manrope);
+    --font-heading: var(--font-manrope);
+  }
   @media (max-width: 640px) {
     body {
       font-size: 1.125rem;

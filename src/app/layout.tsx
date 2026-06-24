@@ -1,4 +1,4 @@
-import { DM_Sans } from "next/font/google";
+import { DM_Sans, Manrope } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { MotionProvider } from "@/components/providers/MotionProvider";
 import "./globals.css";
@@ -9,6 +9,12 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
+const manrope = Manrope({
+  variable: "--font-manrope",
+  subsets: ["latin", "cyrillic"],
+  display: "swap",
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -16,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      className={`${dmSans.variable} h-full`}
+      className={`${dmSans.variable} ${manrope.variable} h-full`}
       suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col overflow-x-hidden pb-20 antialiased md:pb-0">

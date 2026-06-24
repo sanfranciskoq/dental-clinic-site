@@ -6,7 +6,7 @@ A modern, high-conversion dental clinic website built with **Next.js 16**, **Rea
 
 - **Conversion-optimized** — sticky mobile Call/Book bar, dual CTAs on every page, trust signals throughout
 - **Full multi-page site** — Home, Services, About, Team, FAQ, Contact, Book
-- **Frontend-only forms** — client-side validation with react-hook-form + zod; success states ready for backend wiring
+- **Frontend-only forms** — client-side validation with react-hook-form + zod; contact form is frontend-only; book form saves to Supabase when configured
 - **SEO-ready** — per-page metadata, LocalBusiness JSON-LD, FAQPage schema, Person schema on team profiles
 - **Accessible** — skip link, semantic landmarks, WCAG-focused contrast and tap targets (44px min)
 - **Static content** — all clinic data in TypeScript files for easy customization
@@ -51,7 +51,16 @@ Set in `.env.local`:
 NEXT_PUBLIC_SITE_URL=https://yourclinic.com
 ```
 
-## Project Structure
+### Appointment form (Supabase)
+
+1. Create a [Supabase](https://supabase.com) project.
+2. Run [`supabase/schema.sql`](supabase/schema.sql) in the SQL Editor.
+3. Copy `.env.example` → `.env.local` and set:
+   - `NEXT_PUBLIC_SUPABASE_URL` — Project Settings → API → Project URL
+   - `SUPABASE_SERVICE_ROLE_KEY` — Project Settings → API → `service_role` key (server only, never expose to the browser)
+
+Submitted appointment requests are stored in the `appointment_requests` table.
+
 
 ```
 src/

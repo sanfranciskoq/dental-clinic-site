@@ -20,8 +20,8 @@ export async function FinalCTA() {
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <CTALink
             href="/book"
-            variant="outline"
-            className="white-pill-cta-label rounded-full border-primary-foreground/30 bg-primary-foreground hover:bg-primary-foreground/90 dark:font-bold dark:text-primary dark:hover:text-primary"
+            variant="ghost"
+            className="white-pill-cta-label inline-flex min-h-12 items-center justify-center rounded-full bg-white px-8 text-base shadow-lg transition-colors hover:bg-white/90 hover:text-teal-950 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
           >
             {tc("bookAppointment")}
           </CTALink>
