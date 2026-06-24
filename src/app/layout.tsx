@@ -5,6 +5,7 @@ import { SkipLink } from "@/components/layout/SkipLink";
 import { Header } from "@/components/layout/Header";
 import { Footer, MobileCTA } from "@/components/layout/Footer";
 import { LocalBusinessJsonLd } from "@/components/seo/LocalBusinessJsonLd";
+import { MotionProvider } from "@/components/providers/MotionProvider";
 import { siteConfig } from "@/lib/constants";
 import "./globals.css";
 
@@ -31,13 +32,15 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${dmSans.variable} h-full`}>
       <body className="flex min-h-full flex-col pb-20 antialiased md:pb-0">
-        <LocalBusinessJsonLd />
-        <SkipLink />
-        <Header />
-        {children}
-        <Footer />
-        <MobileCTA />
-        <Toaster position="top-center" richColors />
+        <MotionProvider>
+          <LocalBusinessJsonLd />
+          <SkipLink />
+          <Header />
+          {children}
+          <Footer />
+          <MobileCTA />
+          <Toaster position="top-center" richColors />
+        </MotionProvider>
       </body>
     </html>
   );
