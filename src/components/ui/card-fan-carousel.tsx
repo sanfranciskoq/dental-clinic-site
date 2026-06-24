@@ -15,18 +15,39 @@ interface CardFanCarouselProps {
   cards: CardItem[];
 }
 
-const MAX_VISIBLE = 7;
-const HALF = 3;
+const MAX_VISIBLE = 8;
+const CENTER_Z_INDEX = 40;
+const HOVER_Z_INDEX = 50;
+const ENTRANCE_SEEN_KEY = "dental-clinic-fan-carousel-intro-seen";
 
-const FAN_POSITIONS = [
-  { rot: -21, scale: 0.7756, x: -30, y: 7.3, zIndex: 1 },
-  { rot: -14, scale: 0.8498, x: -22, y: 4.0, zIndex: 2 },
-  { rot: -7, scale: 0.9346, x: -11, y: 1.3, zIndex: 3 },
-  { rot: 0, scale: 1.0, x: 0, y: 0.0, zIndex: 10 },
-  { rot: 7, scale: 0.9346, x: 11, y: 1.3, zIndex: 3 },
-  { rot: 14, scale: 0.8498, x: 22, y: 4.0, zIndex: 2 },
-  { rot: 21, scale: 0.7756, x: 30, y: 7.3, zIndex: 1 },
-];
+function getCenterSlot(visibleCount: number) {
+  return Math.floor((visibleCount - 1) / 2);
+}
+
+function buildFanPositions(visibleCount: number) {
+  const center = (visibleCount - 1) / 2;
+  const centerSlot = getCenterSlot(visibleCount);
+
+  return Array.from({ length: visibleCount }, (_, slot) => {
+    const distance = center > 0 ? (slot - center) / center : 0;
+    const absDistance = Math.abs(distance);
+    const distFromCenter = Math.abs(slot - centerSlot);
+
+    return {
+      rot: distance * 21,
+      scale: 1.0 - 0.2244 * absDistance * absDistance,
+      x: distance * 30,
+      y: absDistance * absDistance * 7.3,
+      zIndex: CENTER_Z_INDEX - distFromCenter * 4,
+    };
+  });
+}
+
+function getSlotZIndex(slot: number, centerSlot: number, hoveredSlot: number | null) {
+  if (hoveredSlot !== null && slot === hoveredSlot) return HOVER_Z_INDEX;
+  if (slot === centerSlot) return CENTER_Z_INDEX;
+  return CENTER_Z_INDEX - Math.abs(slot - centerSlot) * 4;
+}
 
 function getResponsiveMultiplier(width: number) {
   if (width < 480) return 0.28;
@@ -49,18 +70,8 @@ function getHeightMultiplier(width: number) {
   return available / idealPx;
 }
 
-function getSlotConfig(totalCards: number, slot: number) {
-  if (totalCards >= MAX_VISIBLE) return FAN_POSITIONS[slot];
-  const center = totalCards >> 1;
-  const distance = totalCards > 1 ? (slot - center) / center : 0;
-  const absDistance = Math.abs(distance);
-  return {
-    rot: distance * 21,
-    scale: 1.0 - 0.2244 * absDistance * absDistance,
-    x: distance * 30,
-    y: absDistance * absDistance * 7.3,
-    zIndex: 10 - Math.abs(slot - center),
-  };
+function getSlotConfig(positions: ReturnType<typeof buildFanPositions>, slot: number) {
+  return positions[slot];
 }
 
 const ARROW_CLASSES =
@@ -97,32 +108,41 @@ export function CardFanCarousel({ cards }: CardFanCarouselProps) {
   const prevVisible = useRef<Set<number>>(new Set());
 
   const totalCards = cards.length;
-  const needsPagination = totalCards > MAX_VISIBLE;
-  const [centerIndex, setCenterIndex] = useState(
-    needsPagination ? HALF : totalCards >> 1,
-  );
+  const visibleCount = Math.min(totalCards, MAX_VISIBLE);
+  const centerSlot = getCenterSlot(visibleCount);
+  const needsPagination = totalCards > 1;
+  const [centerIndex, setCenterIndex] = useState(Math.floor(totalCards / 2));
 
   const getVisibleMap = useCallback(
     (center: number) => {
       const map = new Map<number, number>();
-      if (!needsPagination) {
-        cards.forEach((_, i) => map.set(i, i));
-        return map;
+
+      for (let slot = 0; slot < visibleCount; slot++) {
+        const cardIndex =
+          ((center + slot - centerSlot) % totalCards + totalCards) % totalCards;
+        map.set(cardIndex, slot);
       }
-      for (let slot = 0; slot < MAX_VISIBLE; slot++) {
-        map.set(
-          ((center + slot - HALF) % totalCards + totalCards) % totalCards,
-          slot,
-        );
-      }
+
       return map;
     },
-    [totalCards, needsPagination, cards],
+    [totalCards, visibleCount, centerSlot],
+  );
+
+  const selectCard = useCallback(
+    (index: number) => {
+      if (isAnimating.current || index === centerIndex) return;
+      isAnimating.current = true;
+      const forward = (index - centerIndex + totalCards) % totalCards;
+      const backward = (centerIndex - index + totalCards) % totalCards;
+      directionRef.current = forward <= backward ? "right" : "left";
+      setCenterIndex(index);
+    },
+    [centerIndex, totalCards],
   );
 
   const cycle = useCallback(
     (direction: "left" | "right") => {
-      if (isAnimating.current || !needsPagination) return;
+      if (isAnimating.current || totalCards <= 1) return;
       isAnimating.current = true;
       directionRef.current = direction;
       setCenterIndex((prev) =>
@@ -131,7 +151,7 @@ export function CardFanCarousel({ cards }: CardFanCarouselProps) {
           : (prev - 1 + totalCards) % totalCards,
       );
     },
-    [totalCards, needsPagination],
+    [totalCards],
   );
 
   useEffect(() => {
@@ -150,20 +170,26 @@ export function CardFanCarousel({ cards }: CardFanCarouselProps) {
     const visibleMap = getVisibleMap(centerIndex);
     const previouslyVisible = prevVisible.current;
     const direction = directionRef.current;
-    const isFirstMount = !hasEntered.current;
+    const skipEntrance =
+      typeof window !== "undefined" &&
+      sessionStorage.getItem(ENTRANCE_SEEN_KEY) === "1";
+    const isFirstMount = !hasEntered.current && !skipEntrance;
     const multiplier = getResponsiveMultiplier(window.innerWidth);
     const hMult = getHeightMultiplier(window.innerWidth);
-    const slotCount = needsPagination ? MAX_VISIBLE : totalCards;
-    const config = (slot: number) => getSlotConfig(slotCount, slot);
+    const fanPositions = buildFanPositions(visibleCount);
+    const config = (slot: number) => getSlotConfig(fanPositions, slot);
 
     if (isFirstMount) isAnimating.current = true;
 
     let completedCount = 0;
-    const visibleCount = visibleMap.size;
+    const animatedCardCount = visibleMap.size;
     const onCardDone = () => {
-      if (++completedCount >= visibleCount) {
+      if (++completedCount >= animatedCardCount) {
         isAnimating.current = false;
-        if (isFirstMount) hasEntered.current = true;
+        if (isFirstMount) {
+          hasEntered.current = true;
+          sessionStorage.setItem(ENTRANCE_SEEN_KEY, "1");
+        }
       }
     };
 
@@ -172,7 +198,8 @@ export function CardFanCarousel({ cards }: CardFanCarouselProps) {
       const wasVisible = previouslyVisible.has(cardIndex);
 
       if (slot !== undefined) {
-        const { x, y, rot, scale, zIndex } = config(slot);
+        const { x, y, rot, scale } = config(slot);
+        const zIndex = getSlotZIndex(slot, centerSlot, null);
         const target = {
           x: `${x * multiplier}rem`,
           y: `${y * hMult}rem`,
@@ -181,6 +208,8 @@ export function CardFanCarousel({ cards }: CardFanCarouselProps) {
           opacity: 1,
           zIndex,
         };
+
+        gsap.set(card, { zIndex, pointerEvents: "auto" });
 
         if (prefersReducedMotion) {
           gsap.set(card, target);
@@ -195,8 +224,8 @@ export function CardFanCarousel({ cards }: CardFanCarouselProps) {
           });
           gsap.to(card, {
             ...target,
-            duration: 1.2,
-            ease: "elastic.out(1.05,.78)",
+            duration: 0.75,
+            ease: "power3.out",
             delay: 0.2 + slot * 0.06,
             onComplete: onCardDone,
           });
@@ -225,6 +254,7 @@ export function CardFanCarousel({ cards }: CardFanCarouselProps) {
         }
       } else if (wasVisible) {
         const exitX = direction === "right" ? -40 : 40;
+        gsap.set(card, { zIndex: 0, pointerEvents: "none" });
         if (prefersReducedMotion) {
           gsap.set(card, { opacity: 0, zIndex: 0 });
         } else {
@@ -239,7 +269,9 @@ export function CardFanCarousel({ cards }: CardFanCarouselProps) {
           });
         }
       } else if (isFirstMount) {
-        gsap.set(card, { opacity: 0, scale: 0.3, x: 0, y: 0, zIndex: 0 });
+        gsap.set(card, { opacity: 0, scale: 0.3, x: 0, y: 0, zIndex: 0, pointerEvents: "none" });
+      } else {
+        gsap.set(card, { opacity: 0, zIndex: 0, pointerEvents: "none" });
       }
     });
 
@@ -256,7 +288,7 @@ export function CardFanCarousel({ cards }: CardFanCarouselProps) {
 
     let activeSlot: number | null = null;
     let leaveTimer: ReturnType<typeof setTimeout> | null = null;
-    const centerSlot = visibleEntries.length >> 1;
+    const layoutCenterSlot = visibleEntries.length >> 1;
 
     const updateHoverLayout = (hoveredSlot: number | null) => {
       const mult = getResponsiveMultiplier(window.innerWidth);
@@ -279,7 +311,9 @@ export function CardFanCarousel({ cards }: CardFanCarouselProps) {
             targetScale *= 1.08;
           } else {
             const normalized =
-              centerSlot > 0 ? (slot - centerSlot) / centerSlot : 0;
+              layoutCenterSlot > 0
+                ? (slot - layoutCenterSlot) / layoutCenterSlot
+                : 0;
             const pushStrength =
               8 * (1 - Math.abs(normalized)) * (1 + 0.2 * Math.max(0, 3 - distance));
 
@@ -291,13 +325,16 @@ export function CardFanCarousel({ cards }: CardFanCarouselProps) {
               targetRot += 3 / (distance + 1);
             }
 
-            if (slot === visibleEntries.length - 1 && hoveredSlot < centerSlot) {
+            if (
+              slot === visibleEntries.length - 1 &&
+              hoveredSlot < layoutCenterSlot
+            ) {
               targetY -= 1 * hM;
             }
-            if (slot === 0 && hoveredSlot > centerSlot) targetY -= 1 * hM;
+            if (slot === 0 && hoveredSlot > layoutCenterSlot) targetY -= 1 * hM;
           }
         } else {
-          delay = Math.abs(slot - centerSlot) * 0.02;
+          delay = Math.abs(slot - layoutCenterSlot) * 0.02;
         }
 
         gsap.to(el, {
@@ -310,7 +347,7 @@ export function CardFanCarousel({ cards }: CardFanCarouselProps) {
           ease: "elastic.out(1,.75)",
           overwrite: "auto",
         });
-        gsap.set(el, { zIndex: base.zIndex });
+        gsap.set(el, { zIndex: getSlotZIndex(slot, centerSlot, hoveredSlot) });
       });
     };
 
@@ -353,7 +390,7 @@ export function CardFanCarousel({ cards }: CardFanCarouselProps) {
       window.removeEventListener("resize", onResize);
       if (leaveTimer) clearTimeout(leaveTimer);
     };
-  }, [centerIndex, totalCards, getVisibleMap, needsPagination]);
+  }, [centerIndex, totalCards, getVisibleMap, visibleCount, centerSlot]);
 
   if (!totalCards) return null;
 
@@ -410,18 +447,22 @@ export function CardFanCarousel({ cards }: CardFanCarouselProps) {
             type="button"
             className={`${ARROW_CLASSES} h-10 w-10 md:h-12 md:w-12`}
             onClick={() => cycle("left")}
-            aria-label="Previous"
+            aria-label="Previous team member"
           >
             {chevron("left")}
           </button>
           <div className="flex items-center gap-2">
             {cards.map((_, i) => (
-              <span
+              <button
                 key={i}
+                type="button"
+                onClick={() => selectCard(i)}
+                aria-label={`Show team member ${i + 1}`}
+                aria-current={i === centerIndex ? "true" : undefined}
                 className={`h-2 w-2 rounded-full transition-all duration-300 ${
                   i === centerIndex
                     ? "scale-[1.3] bg-black/70 dark:bg-white/80"
-                    : "bg-black/15 dark:bg-white/15"
+                    : "bg-black/15 hover:bg-black/35 dark:bg-white/15 dark:hover:bg-white/40"
                 }`}
               />
             ))}
@@ -430,7 +471,7 @@ export function CardFanCarousel({ cards }: CardFanCarouselProps) {
             type="button"
             className={`${ARROW_CLASSES} h-10 w-10 md:h-12 md:w-12`}
             onClick={() => cycle("right")}
-            aria-label="Next"
+            aria-label="Next team member"
           >
             {chevron("right")}
           </button>

@@ -9,6 +9,7 @@ import { InsuranceBar } from "@/components/sections/InsuranceBar";
 import { LocationHours } from "@/components/sections/LocationHours";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import { createPageMetadata } from "@/lib/metadata";
+import { heroBackgroundImage } from "@/lib/hero-assets";
 
 interface HomePageProps {
   params: Promise<{ locale: string }>;
@@ -30,6 +31,7 @@ export default async function HomePage({ params }: HomePageProps) {
 
   return (
     <main id="main-content">
+      <link rel="preload" as="image" href={heroBackgroundImage} />
       <Hero />
       <TrustBar />
       <ServicesGrid />

@@ -21,7 +21,7 @@ export async function FinalCTA() {
           <CTALink
             href="/book"
             variant="outline"
-            className="border-primary-foreground/30 bg-primary-foreground text-primary hover:bg-primary-foreground/90"
+            className="white-pill-cta-label rounded-full border-primary-foreground/30 bg-primary-foreground hover:bg-primary-foreground/90 dark:font-bold dark:text-primary dark:hover:text-primary"
           >
             {tc("bookAppointment")}
           </CTALink>

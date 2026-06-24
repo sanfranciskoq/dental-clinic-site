@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 const DEFAULT_STAGGER = 0.08;
 
 const revealTransition = {
-  duration: 0.55,
+  duration: 0.4,
   ease: [0.22, 1, 0.36, 1] as const,
 };
 

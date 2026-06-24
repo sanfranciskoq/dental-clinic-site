@@ -45,7 +45,7 @@ export function HeroSection({
         <div className="mt-8 md:mt-10">
           <Link
             href="/book"
-            className="inline-flex min-h-12 items-center justify-center rounded-full bg-white px-8 text-base font-semibold text-primary shadow-lg transition-colors hover:bg-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/20"
+            className="white-pill-cta-label inline-flex min-h-12 items-center justify-center rounded-full bg-white px-8 text-base shadow-lg transition-colors hover:bg-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/20"
           >
             {ctaLabel}
           </Link>
