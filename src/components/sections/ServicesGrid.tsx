@@ -1,24 +1,11 @@
 import { getLocale } from "next-intl/server";
 import { getServices } from "@/lib/i18n/content";
-import { Container } from "@/components/layout/Container";
-import {
-  ServicesCardsAnimated,
-  ServicesIntroAnimated,
-} from "@/components/sections/services/ServicesAnimated";
+import { ServicesShowcase } from "@/components/sections/services/ServicesShowcase";
 import type { Locale } from "@/i18n/routing";
 
 export async function ServicesGrid() {
   const locale = (await getLocale()) as Locale;
   const services = getServices(locale);
 
-  return (
-    <section className="py-16 md:py-24">
-      <Container>
-        <div className="grid items-start gap-10 lg:grid-cols-12 lg:gap-12 xl:gap-14">
-          <ServicesIntroAnimated />
-          <ServicesCardsAnimated services={services} />
-        </div>
-      </Container>
-    </section>
-  );
+  return <ServicesShowcase services={services} variant="home" />;
 }

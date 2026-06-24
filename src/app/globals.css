@@ -172,6 +172,25 @@
   .white-pill-cta-label {
     @apply font-bold text-teal-900 hover:text-teal-950;
   }
+
+  .services-video-zoom {
+    animation: services-video-zoom 20s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes services-video-zoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.05);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .services-video-zoom {
+    animation: none;
+  }
 }
 
 /* Card fan carousel */
