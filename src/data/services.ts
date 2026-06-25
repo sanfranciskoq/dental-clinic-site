@@ -1,6 +1,7 @@
 import type { Service } from "@/types/service";
+import { getServiceHeaderImage } from "@/lib/services-assets";
 
-export const services: Service[] = [
+const baseServices = [
   {
     slug: "cleanings",
     title: "Cleanings & Checkups",
@@ -206,6 +207,11 @@ export const services: Service[] = [
     faqIds: ["first-pediatric-visit", "child-anxiety", "fluoride-sealants"],
   },
 ];
+
+export const services: Service[] = baseServices.map((service) => ({
+  ...service,
+  headerImage: getServiceHeaderImage(service.slug),
+}));
 
 export function getServiceBySlug(slug: string): Service | undefined {
   return services.find((s) => s.slug === slug);

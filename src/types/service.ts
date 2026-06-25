@@ -4,6 +4,7 @@ export interface Service {
   shortDescription: string;
   description: string;
   icon: string;
+  headerImage: string;
   duration: string;
   costRange: string;
   benefits: string[];

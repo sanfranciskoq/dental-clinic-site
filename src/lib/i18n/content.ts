@@ -1,5 +1,6 @@
 import { FAQ_ITEMS, aboutContent, whyUsItems } from "@/data/faq";
 import { services } from "@/data/services";
+import { getServiceHeaderImage } from "@/lib/services-assets";
 import { teamMembers } from "@/data/team";
 import { testimonials } from "@/data/testimonials";
 import { siteConfig as baseSiteConfig } from "@/data/site";
@@ -11,11 +12,17 @@ import type { Testimonial } from "@/data/testimonials";
 import { ukContent } from "@/data/locales/uk";
 
 function mergeServices(locale: Locale): Service[] {
-  if (locale === "en") return services;
-  return services.map((service) => ({
-    ...service,
-    ...ukContent.services[service.slug],
-  }));
+  return services.map((service) => {
+    const localized =
+      locale === "uk"
+        ? { ...service, ...ukContent.services[service.slug] }
+        : service;
+
+    return {
+      ...localized,
+      headerImage: getServiceHeaderImage(service.slug),
+    };
+  });
 }
 
 function mergeFaq(locale: Locale): FAQItem[] {
