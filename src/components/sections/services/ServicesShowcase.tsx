@@ -58,13 +58,15 @@ export function ServicesShowcase({
     <section
       className={cn(
         "relative flex w-full items-center overflow-hidden",
-        isHome ? "min-h-[85vh]" : "min-h-[55vh]",
+        isHome
+          ? "min-h-[85vh] max-lg:min-h-0"
+          : "min-h-[55vh] max-lg:min-h-0",
       )}
       aria-labelledby="services-showcase-heading"
     >
       <ServicesVideoBackground />
 
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
         <motion.header className="max-w-3xl" {...headerMotion}>
           <p className="text-sm font-semibold uppercase tracking-wide text-primary">
             {t("eyebrow")}

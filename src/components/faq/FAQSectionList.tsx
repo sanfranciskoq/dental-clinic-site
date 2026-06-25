@@ -50,15 +50,22 @@ export function FAQSectionList({
   }
 
   return (
-    <Accordion id={listId} className={listId ? "scroll-mt-24" : undefined}>
+    <Accordion
+      id={listId}
+      className={listId ? "scroll-mt-24 max-lg:scroll-mt-32" : undefined}
+    >
       {items.map((item) => (
         <AccordionItem
           key={item.id}
           value={item.id}
           id={item.category === "emergency" ? item.id : undefined}
         >
-          <AccordionTrigger>{item.question}</AccordionTrigger>
-          <AccordionContent>{item.answer}</AccordionContent>
+          <AccordionTrigger className="max-lg:text-base max-lg:py-3">
+            {item.question}
+          </AccordionTrigger>
+          <AccordionContent className="max-lg:text-base">
+            {item.answer}
+          </AccordionContent>
         </AccordionItem>
       ))}
     </Accordion>

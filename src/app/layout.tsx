@@ -25,7 +25,7 @@ export default function RootLayout({
       className={`${dmSans.variable} ${manrope.variable} h-full`}
       suppressHydrationWarning
     >
-      <body className="flex min-h-full flex-col overflow-x-hidden pb-20 antialiased md:pb-0">
+      <body className="flex min-h-full flex-col overflow-x-hidden pb-[calc(5rem+env(safe-area-inset-bottom))] antialiased md:pb-0">
         <ThemeProvider>
           <MotionProvider>{children}</MotionProvider>
         </ThemeProvider>

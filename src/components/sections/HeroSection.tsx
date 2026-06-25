@@ -21,7 +21,7 @@ export function HeroSection({
   return (
     <section
       aria-label={ariaLabel}
-      className="relative flex min-h-screen w-full items-center justify-center bg-cover bg-center bg-no-repeat"
+      className="relative flex min-h-screen w-full items-center justify-center bg-cover bg-center bg-no-repeat max-lg:min-h-[calc(100dvh-6.5rem)]"
       style={{ backgroundImage: `url(${heroBackgroundImage})` }}
     >
       <div
@@ -29,8 +29,8 @@ export function HeroSection({
         aria-hidden
       />
 
-      <div className="relative z-10 mx-auto max-w-4xl px-6 py-24 text-center text-white sm:px-8">
-        <h1 className="text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+      <div className="relative z-10 mx-auto max-w-4xl px-6 py-24 text-center text-white max-lg:px-4 max-lg:py-16 max-lg:pb-28 sm:px-8">
+        <h1 className="text-4xl font-bold leading-[1.1] tracking-tight max-lg:text-[1.75rem] sm:text-5xl md:text-6xl lg:text-7xl">
           {line1}
           <br />
           {line2}

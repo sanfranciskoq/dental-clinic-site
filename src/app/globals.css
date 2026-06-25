@@ -176,6 +176,21 @@
   .services-video-zoom {
     animation: services-video-zoom 20s ease-in-out infinite alternate;
   }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklab, var(--muted-foreground) 35%, transparent)
+      transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background: color-mix(in oklab, var(--muted-foreground) 35%, transparent);
+  }
 }
 
 @keyframes services-video-zoom {
@@ -267,14 +282,14 @@
 
 @media (max-width: 479px) {
   .fan-layout {
-    height: 22rem;
+    height: 20rem;
   }
 
   .fan-card {
-    width: 7rem;
-    height: 12rem;
-    margin-left: -3.5rem;
-    bottom: 5rem;
+    width: 6.5rem;
+    height: 11rem;
+    margin-left: -3.25rem;
+    bottom: 4.5rem;
     border-radius: 1rem;
   }
 }

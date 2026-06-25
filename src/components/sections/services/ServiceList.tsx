@@ -69,9 +69,15 @@ export function ServiceList({
               onMouseEnter={() => onActiveChange(index)}
               onFocus={() => onActiveChange(index)}
               onKeyDown={(event) => handleKeyDown(event, index)}
-              onClick={() => router.push(`/services/${service.slug}`)}
+              onClick={() => {
+                if (isActive) {
+                  router.push(`/services/${service.slug}`);
+                } else {
+                  onActiveChange(index);
+                }
+              }}
               className={cn(
-                "group flex w-full items-start gap-4 border-l-[3px] py-4 pr-2 text-left transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
+                "group flex w-full items-start gap-3 border-l-[3px] py-3 pr-2 text-left transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-transparent max-lg:gap-3 max-lg:py-3 lg:gap-4 lg:py-4",
                 isActive
                   ? "border-l-primary translate-x-2"
                   : "border-l-transparent hover:translate-x-2 hover:border-l-primary/60",
@@ -79,7 +85,7 @@ export function ServiceList({
             >
               <span
                 className={cn(
-                  "min-w-[2.5rem] text-2xl font-bold tabular-nums transition-colors duration-300 sm:text-3xl",
+                  "min-w-[2.5rem] text-2xl font-bold tabular-nums transition-colors duration-300 max-lg:text-xl sm:text-3xl",
                   isActive
                     ? "text-primary"
                     : "text-primary/35 group-hover:text-primary/70",
@@ -90,7 +96,7 @@ export function ServiceList({
               <span className="min-w-0 flex-1">
                 <span
                   className={cn(
-                    "block text-xl font-semibold text-white transition-colors duration-300 sm:text-2xl",
+                    "block text-xl font-semibold text-white transition-colors duration-300 max-lg:text-lg sm:text-2xl",
                     isActive ? "text-white" : "text-white/85 group-hover:text-white",
                   )}
                 >
@@ -101,7 +107,7 @@ export function ServiceList({
                     "mt-1 block text-sm leading-relaxed text-white/70 transition-all duration-300 sm:text-base",
                     isActive
                       ? "max-h-24 opacity-100"
-                      : "max-h-0 overflow-hidden opacity-0 group-hover:max-h-24 group-hover:opacity-100 md:max-h-24 md:overflow-visible md:opacity-80",
+                      : "max-h-0 overflow-hidden opacity-0 group-hover:max-h-24 group-hover:opacity-100 lg:max-h-24 lg:overflow-visible lg:opacity-80",
                   )}
                 >
                   {service.shortDescription}

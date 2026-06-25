@@ -34,7 +34,7 @@ export async function TrustBar() {
 
   return (
     <section aria-label={t("clinicCredentials")} className="border-y border-border bg-card">
-      <Container className="grid grid-cols-2 gap-6 py-8 md:grid-cols-4 md:gap-8">
+      <Container className="grid max-sm:grid-cols-1 grid-cols-2 gap-6 py-8 md:grid-cols-4 md:gap-8">
         {stats.map((stat) => (
           <div key={stat.label} className="flex flex-col items-center text-center">
             <stat.icon className="mb-2 size-6 text-primary" aria-hidden />

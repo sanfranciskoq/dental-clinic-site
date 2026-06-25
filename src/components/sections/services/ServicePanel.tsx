@@ -27,7 +27,7 @@ export function ServicePanel({ service }: ServicePanelProps) {
 
   return (
     <div
-      className="rounded-2xl border border-white/15 bg-white/10 p-6 backdrop-blur-md sm:p-8 lg:min-h-[22rem]"
+      className="rounded-2xl border border-white/15 bg-white/10 p-6 backdrop-blur-md max-lg:p-5 sm:p-8 lg:min-h-[22rem]"
       aria-live="polite"
       aria-atomic="true"
     >

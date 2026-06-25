@@ -29,7 +29,8 @@ export async function FinalCTA() {
             href={site.phoneHref}
             className="inline-flex min-h-11 items-center justify-center rounded-full border border-primary-foreground/40 px-6 text-sm font-semibold transition-colors hover:bg-primary-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
           >
-            {tc("call", { phone: site.phone })}
+            <span className="lg:hidden">{tc("callShort")}</span>
+            <span className="hidden lg:inline">{tc("call", { phone: site.phone })}</span>
           </a>
         </div>
       </Container>

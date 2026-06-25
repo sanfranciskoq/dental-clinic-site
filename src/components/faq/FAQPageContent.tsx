@@ -120,7 +120,7 @@ export function FAQPageContent({ items }: { items: FAQItem[] }) {
           </p>
         </header>
 
-        <div id="emergency" className="mb-8 space-y-5 scroll-mt-24">
+        <div id="emergency" className="mb-8 space-y-5 scroll-mt-24 max-lg:scroll-mt-32">
           <CategoryGrid
             activeCategory={activeCategory}
             onSelect={setActiveCategory}

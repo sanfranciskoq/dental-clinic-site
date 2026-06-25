@@ -195,7 +195,7 @@ export function BookForm({ defaultService, services }: BookFormProps) {
           <select
             id="book-time"
             required
-            className="mt-1.5 flex min-h-11 w-full rounded-xl border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="mt-1.5 flex min-h-11 w-full rounded-xl border border-input bg-background px-3 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:text-sm"
             aria-invalid={!!errors.preferredTime}
             {...register("preferredTime")}
           >
@@ -214,13 +214,13 @@ export function BookForm({ defaultService, services }: BookFormProps) {
         </div>
       </div>
 
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid gap-5 lg:grid-cols-2">
         <div>
           <Label htmlFor="book-service">{t("service")}</Label>
           <select
             id="book-service"
             required
-            className="mt-1.5 flex min-h-11 w-full rounded-xl border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="mt-1.5 flex min-h-11 w-full rounded-xl border border-input bg-background px-3 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:text-sm"
             aria-invalid={!!errors.service}
             {...register("service")}
           >

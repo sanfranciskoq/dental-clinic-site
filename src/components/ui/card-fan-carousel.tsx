@@ -451,7 +451,7 @@ export function CardFanCarousel({ cards }: CardFanCarouselProps) {
           >
             {chevron("left")}
           </button>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 max-lg:hidden">
             {cards.map((_, i) => (
               <button
                 key={i}
@@ -467,6 +467,12 @@ export function CardFanCarousel({ cards }: CardFanCarouselProps) {
               />
             ))}
           </div>
+          <span
+            className="min-w-[3.5rem] text-center text-sm font-medium tabular-nums text-muted-foreground lg:hidden"
+            aria-live="polite"
+          >
+            {centerIndex + 1} / {totalCards}
+          </span>
           <button
             type="button"
             className={`${ARROW_CLASSES} h-10 w-10 md:h-12 md:w-12`}

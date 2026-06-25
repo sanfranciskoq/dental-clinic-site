@@ -26,19 +26,19 @@ export async function Footer({ locale }: FooterProps) {
 
   return (
     <footer className="mt-auto border-t border-border bg-card">
-      <div className="border-b border-rose-100 bg-rose-50/80">
-        <Container className="flex flex-wrap items-center justify-center gap-2 py-3 text-sm text-rose-800">
+      <div className="border-b border-rose-100 bg-rose-50/80 dark:border-rose-900/50 dark:bg-rose-950/40">
+        <Container className="flex flex-wrap items-center justify-center gap-2 py-3 text-sm text-rose-800 dark:text-rose-200">
           <AlertCircle className="size-4 shrink-0" aria-hidden />
           <span>
             {tf("emergency")}{" "}
             <a
               href={site.phoneHref}
-              className="font-semibold underline underline-offset-2 hover:text-rose-900"
+              className="font-semibold underline underline-offset-2 hover:text-rose-900 dark:hover:text-rose-100"
             >
               {tc("call", { phone: site.phone })}
             </a>{" "}
             {tf("emergencyText")}{" "}
-            <EmergencyFaqLink className="font-semibold underline underline-offset-2 hover:text-rose-900">
+            <EmergencyFaqLink className="font-semibold underline underline-offset-2 hover:text-rose-900 dark:hover:text-rose-100">
               {tf("emergencyFaq")}
             </EmergencyFaqLink>
           </span>
@@ -140,7 +140,7 @@ export async function MobileCTA({ locale }: FooterProps) {
 
   return (
     <div
-      className="fixed bottom-0 left-0 right-0 z-50 flex border-t border-border bg-card/95 p-3 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] backdrop-blur md:hidden"
+      className="fixed bottom-0 left-0 right-0 z-50 flex gap-2 border-t border-border bg-card/95 p-3 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] backdrop-blur max-md:pb-[max(0.75rem,env(safe-area-inset-bottom))] md:hidden"
       role="group"
       aria-label={tc("quickActions")}
     >
